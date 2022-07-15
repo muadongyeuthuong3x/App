@@ -34,7 +34,6 @@ import {
 const ItemChat = ({ route, navigation }) => {
     const data = route.params;
     const [message, setMessage] = React.useState('');
-    const [stateCheckEndCall, setstateCheckEndCall] = useState(1)
     const [allChat, setAllChat] = React.useState('');
     const [urlBe, setUrlBE] = React.useState('');
     const [informationUserm, setInformationUser] = React.useState('')
@@ -307,7 +306,6 @@ const ItemChat = ({ route, navigation }) => {
     }
 
     React.useEffect(() => {
-        if (data.call) {
             join()
             database()
                 .ref(`/roomId/${data?.idFriend}`)
@@ -316,11 +314,8 @@ const ItemChat = ({ route, navigation }) => {
                     if (snapshot.val() != null) {
                     }
                 })
-        }
+        
 
-        else {
-            setstateCheckEndCall(1)
-        }
 
 
     }, [])
@@ -335,16 +330,9 @@ const ItemChat = ({ route, navigation }) => {
         if (offer) {
 
             await setUpRtc()
-
-            // Exchange the ICE candidates
-            //Check the parameter , Its reversed .Since the joining part is callee
             collectIceCandidates(cRef, 'callee', 'caller')
             if (pc.current) {
                 pc.current.setRemoteDescription(new RTCSessionDescription(offer))
-
-                // create the answer for the call
-                //Update the document with answer
-
                 const answer = await pc.current.createAnswer();
                 pc.current.setLocalDescription(answer)
                 const cWithAnswer = {
@@ -403,7 +391,6 @@ const ItemChat = ({ route, navigation }) => {
 
     const navigaetCallVideo = async () => {
         connecting.current = true
-        setstateCheckEndCall(0)
         await setUpRtc()
         const cRef = firestore().collection('meet').doc(data.idRoom);
         collectIceCandidates(cRef, 'caller', 'callee')
@@ -424,6 +411,14 @@ const ItemChat = ({ route, navigation }) => {
                 idYou: data.idYou,
                 name: data.name
             }
+
+            //      const inforMationCall = {
+            //     imageYou: data.avatar,
+            //     idRoom: data.idRoom,
+            //     idFriend:   data.idYou,
+            //     idYou: data.idFriend,
+            //     name: data.name
+            // }
             console.log(data)
 
             cRef.set(cWithOffer);
@@ -455,14 +450,11 @@ const ItemChat = ({ route, navigation }) => {
                     <View style={styles.butonEndCall11}>
                         <FontAwesome name="phone" style={styles.iconEndCall11} size={20} onPress={hangup} />
                     </View>
-                    {/* <View style={styles.buttonCall}>
-                        <FontAwesome name="phone" style={styles.iconJoinCall1} size={20} onPress={join} />
-                    </View> */}
                 </View>
             </View>
         )
     }
-    if (stateCheckEndCall === 1) {
+
         return (
             <View style={styles.messengerChat}>
                 <View style={styles.header}>
@@ -531,13 +523,7 @@ const ItemChat = ({ route, navigation }) => {
             </View>
 
         );
-    }
-
-    return (
-        <View>
-
-        </View>
-    )
+  
 };
 
 export default ItemChat;
@@ -805,7 +791,7 @@ const styles = StyleSheet.create({
     butonEndCall11: {
         position: 'relative',
         top: 500,
-        left: 160,
+        left: 180,
         backgroundColor: 'red',
         width: 70,
         height: 70,

@@ -103,7 +103,7 @@ const ListUser = ({ route, navigation }) => {
             idYou: data?.uid,
             idFriend: uid,
             idRoom: roomId,
-            avatar: you[4],
+            avatar: you[6],
         
           }
           navigation.navigate('ItemChat', dataSend);// no chay xuong day chua

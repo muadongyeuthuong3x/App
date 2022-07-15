@@ -33,6 +33,7 @@ const CallVideo = ({ navigate }) => {
       database()
         .ref(`/roomId/${idLogin}`)
         .on('value', snapshot => {
+          console.log(dataCall)
           console.log(dataCall[0])
           if (snapshot.val() != null) {
             setDataCall(Object.values(snapshot.val()))
@@ -65,14 +66,16 @@ const CallVideo = ({ navigate }) => {
       }
     }
     const navigateCallVideo = async () => {
+        console.log("ID FRIEND")
+      console.log(dataCall)
         const data = {
-          imageYou :dataCall[2],
-          idRoom : dataCall[3],
-          idFriend : dataCall[4],
-          idYou:dataCall[1],
-          call: true
+          imageYou :dataCall[1],
+          idRoom : dataCall[2],
+          idFriend : dataCall[3],
+          idYou:dataCall[0],
         }
-        console.log(dataCall)
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAA")
+        // console.log(dataCall)
         console.log(data)
          navigation.navigate("ItemChat", data);
         setcallSucces(false)
@@ -83,7 +86,7 @@ const CallVideo = ({ navigate }) => {
     <Image
       style={styles.tinyLogo}
       source={{
-        uri: dataCall[2]
+        uri: dataCall[1]
       }}
     />
     <View>
